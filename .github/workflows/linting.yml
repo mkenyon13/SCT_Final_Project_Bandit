@@ -1,0 +1,33 @@
+name: Lint Code Base
+
+on:
+  push:
+    branches: [main, dev_branch] 
+  pull_request:
+    branches: [main, dev_branch]
+
+jobs:
+  super-lint:
+    name: Lint code base
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  
+
+      - name: Run Super-Linter
+        uses: super-linter/super-linter@v8.2.1
+        env:
+          DEFAULT_BRANCH: main  
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional behavior customization
+          # VALIDATE_ALL_CODEBASE: false  # Only validate changed files
+          # VALIDATE_PYTHON: true
+          # VALIDATE_JAVASCRIPT_ES: true
